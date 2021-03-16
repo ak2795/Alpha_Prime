@@ -36,16 +36,17 @@ uint32_t ble_sls_init(ble_sls_t * p_sls, const ble_sls_init_t * p_sls_init)
   }
 
   // Add Sled Value characteristic
-  return sled_value_char_add(p_sls, p_sls_init);
+  err_code = sled_value_char_add(p_sls, p_sls_init);
+  if (err_code != NRF_SUCCESS)
+  {
+    return err_code;
+  }
+
+  // Add Sled PWM characteristic
+  err_code = sled_pwm_char_add(p_sls, p_sls_init);
+  return err_code;
 }
 
-/**@brief Function for adding the Custom Value characteristic.
- *
- * @param[in]   p_sls        Sled Service structure.
- * @param[in]   p_sls_init   Information needed to initialize the service.
- *
- * @return      NRF_SUCCESS on success, otherwise an error code.
- */
 static uint32_t sled_value_char_add(ble_sls_t * p_sls, const ble_sls_init_t * p_sls_init)
 {
     uint32_t            err_code;
@@ -96,6 +97,68 @@ static uint32_t sled_value_char_add(ble_sls_t * p_sls, const ble_sls_init_t * p_
     attr_char_value.init_len  = sizeof(uint8_t);
     attr_char_value.init_offs = 0;
     attr_char_value.max_len   = sizeof(uint64_t);  // Size of characteristic
+
+    err_code = sd_ble_gatts_characteristic_add(p_sls->service_handle, &char_md,
+                                               &attr_char_value,
+                                               &p_sls->sled_value_handles);
+    if (err_code != NRF_SUCCESS)
+    {
+        return err_code;
+    }
+    return NRF_SUCCESS;
+}
+
+
+static uint32_t sled_pwm_char_add(ble_sls_t * p_sls, const ble_sls_init_t * p_sls_init)
+{
+    uint32_t            err_code;
+    ble_gatts_char_md_t char_md;
+    ble_gatts_attr_md_t cccd_md;
+    ble_gatts_attr_t    attr_char_value;
+    ble_uuid_t          ble_uuid;
+    ble_gatts_attr_md_t attr_md;
+
+   
+    memset(&char_md, 0, sizeof(char_md));
+
+    char_md.char_props.read   = 1;
+    char_md.char_props.write  = 1;
+    char_md.p_char_user_desc  = NULL;
+    char_md.p_char_pf         = NULL;
+    char_md.p_user_desc_md    = NULL;
+    char_md.p_cccd_md         = NULL;
+    char_md.p_sccd_md         = NULL; 
+
+    memset(&cccd_md, 0, sizeof(cccd_md));
+
+    // Read operation on Cccd should be possible without authentication.
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.read_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.write_perm);
+
+    cccd_md.vloc = BLE_GATTS_VLOC_STACK;
+    char_md.char_props.notify = 1;
+    char_md.p_cccd_md         = &cccd_md;
+
+
+    memset(&attr_md, 0, sizeof(attr_md));
+
+    attr_md.read_perm  = p_sls_init->sled_value_char_attr_md.read_perm;
+    attr_md.write_perm = p_sls_init->sled_value_char_attr_md.write_perm;
+    attr_md.vloc       = BLE_GATTS_VLOC_STACK;
+    attr_md.rd_auth    = 0;
+    attr_md.wr_auth    = 0;
+    attr_md.vlen       = 0;
+
+    ble_uuid.type = p_sls->uuid_type;
+    ble_uuid.uuid = SLED_PWM_CHAR_UUID;
+
+    memset(&attr_char_value, 0, sizeof(attr_char_value));
+
+    attr_char_value.p_uuid    = &ble_uuid;
+    attr_char_value.p_attr_md = &attr_md;
+    attr_char_value.init_len  = sizeof(uint8_t);
+    attr_char_value.init_offs = 0;
+    attr_char_value.max_len   = sizeof(uint8_t);  // Size of characteristic
 
     err_code = sd_ble_gatts_characteristic_add(p_sls->service_handle, &char_md,
                                                &attr_char_value,
@@ -195,7 +258,7 @@ uint32_t ble_sls_sled_value_update(ble_sls_t * p_sls, uint64_t sled_value)
 
     gatts_value.len     = sizeof(uint64_t);
     gatts_value.offset  = 0;
-    gatts_value.p_value = &sled_value;
+    gatts_value.p_value = (uint8_t*) &sled_value;
 
     // Update database.
     err_code = sd_ble_gatts_value_set(p_sls->conn_handle,
