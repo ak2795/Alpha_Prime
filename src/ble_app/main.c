@@ -80,6 +80,8 @@
 #include "nrf_ble_qwr.h"
 #include "nrf_pwr_mgmt.h"
 
+#include "nrfx_pwm.h"
+
 #include "bsp.h"
 #include "nrf_delay.h"
 #include "nrf_drv_qdec.h"
@@ -90,6 +92,7 @@
 #include "nrf_log_default_backends.h"
 
 #include "ble_sls.h"
+#include "pwm_controller.h"
 
 #define DEVICE_NAME                     "RAPTR_SLED"                            /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                   /**< Manufacturer. Will be passed to Device Information Service. */
@@ -215,15 +218,6 @@ static void timers_init(void)
     APP_ERROR_CHECK(err_code);
 
     // Create timers.
-
-    /* YOUR_JOB: Create any timers to be used by the application.
-                 Below is an example of how to create a timer.
-                 For every new timer needed, increase the value of the macro APP_TIMER_MAX_TIMERS by
-                 one.
-       ret_code_t err_code;
-       err_code = app_timer_create(&m_app_timer_id, APP_TIMER_MODE_REPEATED, timer_timeout_handler);
-       APP_ERROR_CHECK(err_code); */
-
      err_code = app_timer_create(&m_qenc_timer_id,
                                  APP_TIMER_MODE_REPEATED,
                                  qenc_meas_timeout_handler);
@@ -302,6 +296,7 @@ static void on_sls_evt(ble_sls_t     * p_sls_service,
     switch(p_evt->evt_type)
     {
         case BLE_SLS_EVT_CONNECTED:
+            initPwm(PWM_LINEAR1);
             break;
 
         case BLE_SLS_EVT_DISCONNECTED:
@@ -778,14 +773,14 @@ int main(void)
     conn_params_init();
     peer_manager_init();
 
-    //Initialize hardware
     err_code = NRF_LOG_INIT(NULL);
     APP_ERROR_CHECK(err_code);
-
+    //Initialize PWM Module
+    initPwm(PWM_ROLLING_HILLS);
+    // Initialize QDEC
     err_code = nrf_drv_qdec_init(NULL, qdec_event_handler);
     APP_ERROR_CHECK(err_code);
     nrf_qdec_dbfen_enable();
-    
     NRF_LOG_INFO("QDEC initialized.");
 
     // Start execution.

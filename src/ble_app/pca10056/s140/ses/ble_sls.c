@@ -190,6 +190,7 @@ void ble_sls_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context)
             break;
 
         case BLE_GATTS_EVT_WRITE:
+            NRF_LOG_INFO("HERE");
             on_write(p_sls, p_ble_evt);
             break;
 
@@ -216,12 +217,12 @@ static void on_disconnect(ble_sls_t * p_sls, ble_evt_t const * p_ble_evt)
 
 static void on_write(ble_sls_t * p_sls, ble_evt_t const * p_ble_evt)
 {
-     ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
-    
+    ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
     // Check if the handle passed with the event matches the Custom Value Characteristic handle.
     if ((p_evt_write->handle == p_sls->sled_value_handles.cccd_handle)
         && (p_evt_write->len == 2))
     {
+       
         // CCCD written, call application event handler
         if (p_sls->evt_handler != NULL)
         {
@@ -240,8 +241,6 @@ static void on_write(ble_sls_t * p_sls, ble_evt_t const * p_ble_evt)
         }
     }
 }
-
-
 
 uint32_t ble_sls_sled_value_update(ble_sls_t * p_sls, uint64_t sled_value)
 {
