@@ -90,6 +90,7 @@
 #include "nrf_log_default_backends.h"
 
 #include "ble_sls.h"
+#include "pwm_controller.h"
 
 #define DEVICE_NAME                     "RAPTR_SLED"                       /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                   /**< Manufacturer. Will be passed to Device Information Service. */
@@ -149,6 +150,7 @@ static ble_uuid_t m_adv_uuids[] =                                               
 static void char_pwm_write_handler(uint32_t pwm_value)
 {
   NRF_LOG_INFO("We have received the PWM value into our App: %d", pwm_value);
+  initPwm(pwm_value);
 }
 
 static void advertising_start(bool erase_bonds);

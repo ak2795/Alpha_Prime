@@ -68,12 +68,16 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="125" useTextEdit="1" openedFrom="E:/Dev/Nordic/nRF5SDK160098a08e2/RAPTR_Sled/src/ble_app/pca10056/s140/ses/ble_sls.c" useBinaryEdit="0" left="0" path="ble_sls.h" selected="0" top="75" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="42" y="212" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="ble_sls.c" selected="1" top="206" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="242" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="ble_sls.c" selected="0" top="206" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="60" useTextEdit="1" openedFrom="E:/Dev/Nordic/nRF5SDK160098a08e2/RAPTR_Sled/src/ble_app/main.c" useBinaryEdit="0" left="0" path="../../../../../../integration/nrfx/legacy/nrf_drv_qdec.h" selected="0" top="17" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5079" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="5038" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="796" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../../main.c" selected="0" top="775" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="21" y="4936" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="4902" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="77" y="151" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../../main.c" selected="0" top="124" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="332" useTextEdit="1" openedFrom="E:/Dev/Nordic/nRF5SDK160098a08e2/RAPTR_Sled/src/ble_app/main.c" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/hal/nrf_qdec.h" selected="0" top="466" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../../../../../components/libraries/bsp/bsp_btn_ble.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../../../../../components/libraries/bsp/bsp_btn_ble.c" selected="0" top="12" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="30" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="pwm_controller.c" selected="1" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="31" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="pwm_controller.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../../../../../../modules/nrfx/drivers/src/nrfx_pwm.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="134" useTextEdit="1" openedFrom="E:/Dev/Nordic/nRF5SDK160098a08e2/Alpha_Prime/src/ble_app/pca10056/s140/ses/pwm_controller.c" useBinaryEdit="0" left="0" path="../../../../../../components/boards/pca10056.h" selected="0" top="37" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="ble_app_raptr_pca10056_s140" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="E:/Dev/Nordic/nRF5SDK160098a08e2/modules/nrfx/drivers/src" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="ble_app_raptr_pca10056_s140" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="E:/Dev/Nordic/nRF5SDK160098a08e2/modules/nrfx/drivers/src" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>
