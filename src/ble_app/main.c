@@ -146,6 +146,10 @@ static ble_uuid_t m_adv_uuids[] =                                               
     {SLED_SERVICE_UUID, BLE_UUID_TYPE_VENDOR_BEGIN}
 };
 
+static void char_pwm_write_handler(uint32_t pwm_value)
+{
+  NRF_LOG_INFO("We have received the PWM value into our App: %d", pwm_value);
+}
 
 static void advertising_start(bool erase_bonds);
 
@@ -338,6 +342,7 @@ static void services_init(void)
     // Initialize SLS Service init structure to zero
     ble_sls_init_t     sls_init;
     memset(&sls_init, 0, sizeof(sls_init));
+    sls_init.char_pwm_value_write_handler = char_pwm_write_handler;
 
     // Set the sls evt handler
     sls_init.evt_handler = on_sls_evt;
@@ -463,7 +468,6 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
     }
 }
 
-
 /**@brief Function for handling BLE events.
  *
  * @param[in]   p_ble_evt   Bluetooth stack event.
@@ -546,7 +550,7 @@ static void ble_stack_init(void)
     APP_ERROR_CHECK(err_code);
 
     // Register a handler for BLE events.
-    NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
+    NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, (void *) &m_sls);
 }
 
 

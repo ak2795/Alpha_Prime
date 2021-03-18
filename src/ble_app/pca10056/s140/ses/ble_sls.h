@@ -17,6 +17,9 @@ NRF_SDH_BLE_OBSERVER(_name ## _obs,                                             
 
 #define SLED_SERVICE_UUID       0x1400
 #define SLED_VALUE_CHAR_UUID    0x1401
+#define SLED_PWM_CHAR_UUID      0x1402
+
+typedef void (*ble_os_char_pwm_value_write_handler_t) (uint32_t pwm_value);
 
 typedef enum
 {
@@ -45,6 +48,7 @@ typedef struct
   ble_sls_evt_handler_t         evt_handler;                  /**< Event handler to be called for handling events in Sled Service */
   uint8_t                       initial_sled_value;           /**< Initial sled value */
   ble_srv_cccd_security_mode_t  sled_value_char_attr_md;      /**< Initial security level for Sled characteristics attribute */
+  ble_os_char_pwm_value_write_handler_t char_pwm_value_write_handler;
 } ble_sls_init_t;
 
 /**@brief Sled Service structure. This contains various status information for the service. */
@@ -53,11 +57,11 @@ struct ble_sls_s
   ble_sls_evt_handler_t     evt_handler;
   uint16_t                  service_handle;         /**< Handle of Sled Service (as provided by the BLE stack) */
   ble_gatts_char_handles_t  sled_value_handles;     /**< Handles related to the Sled Value characteristic */
+  ble_gatts_char_handles_t  sled_pwm_handles;       /**< Handles related to the Sled PWM characteristic */
   uint16_t                  conn_handle;            /**< Handle of the current connection (as provided by the BLE stack, is BLE_CONN_HANDLE_INVALID if not in a connection) */
   uint8_t                   uuid_type;
+  ble_os_char_pwm_value_write_handler_t char_pwm_value_write_handler;
 };
-
-
 
 /**@brief Function for initializing the Sled Service.
  *
@@ -78,6 +82,15 @@ uint32_t ble_sls_init(ble_sls_t * p_sls, const ble_sls_init_t * p_sls_init);
  * @return      NRF_SUCCESS on success, otherwise an error code.
  */
 static uint32_t sled_value_char_add(ble_sls_t * p_sls, const ble_sls_init_t * p_sls_init);
+
+/**@brief Function for adding the Sled PWM characteristic.
+ *
+ * @param[in]   p_sls        Sled Service structure.
+ * @param[in]   p_sls_init   Information needed to initialize the service.
+ *
+ * @return      NRF_SUCCESS on success, otherwise an error code.
+ */
+static uint32_t sled_pwm_char_add(ble_sls_t * p_sls, const ble_sls_init_t * p_sls_init);
 
 /**@brief Function for handling the Application's BLE Stack events.
  *
